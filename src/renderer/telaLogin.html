@@ -8,23 +8,23 @@
 </head>
 <body>
     <div class="login-card">
-        <h1>Bem-vindo (a)</h1>
+        <h1 id="titulo">Acesse sua conta</h1>
 
-        <!-- PARTE DO LOGIN -->
-        <form>
+        <form id="form-login">
             <label for="email">E-mail:</label>
             <input type="email" id="email" name="email" placeholder="Seu E-mail aqui" required>
 
             <label for="senha">Senha:</label>
             <input type="password" id="senha" name="senha" placeholder="Sua senha aqui" required>
 
+            <p id="erro-login" class="erro"></p>
+
             <button type="submit">Entrar</button>
 
             <p>Não tem conta? <a href="#" id="ir-cadastro">Cadastre-se</a></p>
         </form>
 
-        <!-- PARTE DO CADASTRO -->
-        <form id="formulario-cadastro" class="oculto">
+        <form id="form-cadastro" class="oculto">
             <label for="nome-cadastro">Nome:</label>
             <input type="text" id="nome-cadastro" name="nome" placeholder="Seu nome" required>
 
@@ -37,10 +37,14 @@
             <label for="confirmar-senha">Confirmar senha:</label>
             <input type="password" id="confirmar-senha" name="confirmar-senha" placeholder="Repita a senha" required>
 
+            <p id="erro-cadastro" class="erro"></p>
+
             <button type="submit">Criar conta</button>
 
             <p>Já tem conta? <a href="#" id="ir-login">Entrar</a></p>
         </form>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
