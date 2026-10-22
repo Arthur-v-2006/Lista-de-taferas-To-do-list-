@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Tarefas</title>
+    <link rel="stylesheet" href="telaPrincipal.css">
+</head>
+<body>
+    <div class="principal-card">
+        <header>
+            <h1>Olá, <span id="nome-usuario">Arthur</span></h1>
+            <button id="logout" type="button">Sair</button>
+        </header>
+
+        <form id="form-tarefa">
+            <input type="text" id="tarefa-texto" name="texto" aria-label="Texto da tarefa" placeholder="O que precisa ser feito?" required>
+            <input type="date" id="tarefa-data" name="data" aria-label="Data">
+
+            <select id="tarefa-prioridade" name="prioridade" aria-label="Prioridade" required>
+                <option value="baixa">Baixa</option>
+                <option value="media" selected>Média</option>
+                <option value="alta">Alta</option>
+            </select>
+
+            <input type="text" id="tarefa-categoria" list="categorias" aria-label="Categoria" placeholder="Categoria (opcional)">
+            <datalist id="categorias"></datalist>
+
+            <button type="submit" class="btn-adicionar">Adicionar</button>
+        </form>
+
+        <div class="controles">
+            <div class="filtros">
+                <button type="button" class="filtro ativo" data-filtro="todas">Todas</button>
+                <button type="button" class="filtro" data-filtro="pendentes">Pendentes</button>
+                <button type="button" class="filtro" data-filtro="concluidas">Concluídas</button>
+            </div>
+
+            <select id="ordenar" aria-label="Ordenar por">
+                <option value="recentes">Mais recentes</option>
+                <option value="data">Por data</option>
+                <option value="prioridade">Por prioridade</option>
+            </select>
+        </div>
+
+        <ul id="lista-tarefas"></ul>
+
+        <p id="contador"></p>
+    </div>
+
+    <script src="telaPrincipal.js"></script>
+</body>
+</html>
