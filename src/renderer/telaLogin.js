@@ -97,5 +97,13 @@ formLogin.addEventListener("submit", (e) => {
     }
 
     erroLogin.textContent = "";
-    console.log("Login feito! Olá,", usuario.nome);
+
+    const usuarioLogado = {
+        nome: usuario.nome,
+        email: usuario.email
+    };
+
+    localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
+
+    window.location.href = "telaPrincipal.html";
 });
