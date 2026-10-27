@@ -1,0 +1,257 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 20px;
+    background: #f1f5f9;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #1e293b;
+}
+
+/* ===== CARTÃO ===== */
+.principal-card {
+    width: 100%;
+    max-width: 760px;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+}
+
+/* ===== CABEÇALHO ===== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #3b82f6;
+}
+
+#logout {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    background: transparent;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+#logout:hover {
+    color: #dc2626;
+    border-color: #dc2626;
+}
+
+/* ===== FORMULÁRIO ===== */
+#form-tarefa {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+    padding: 10px 12px;
+    font-size: 15px;
+    font-family: inherit;
+    color: #1e293b;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+#tarefa-texto {
+    flex: 1 1 100%;
+}
+
+#tarefa-data,
+#tarefa-prioridade,
+#tarefa-categoria {
+    flex: 1 1 140px;
+}
+
+.btn-adicionar {
+    flex: 1 1 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    background: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-adicionar:hover {
+    background: #2563eb;
+}
+
+/* ===== CONTROLES ===== */
+.controles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.filtros {
+    display: flex;
+    gap: 8px;
+}
+
+.filtro {
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.filtro:hover {
+    background: #dbeafe;
+}
+
+.filtro.ativo {
+    color: #ffffff;
+    background: #3b82f6;
+}
+
+/* ===== LISTA ===== */
+#lista-tarefas {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tarefa {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid #cbd5e1;
+    border-radius: 10px;
+}
+
+.tarefa input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #3b82f6;
+}
+
+.tarefa-texto {
+    flex: 1 1 160px;
+    font-size: 16px;
+}
+
+/* cor por prioridade */
+.prioridade-baixa {
+    border-left-color: #22c55e;
+}
+
+.prioridade-media {
+    border-left-color: #eab308;
+}
+
+.prioridade-alta {
+    border-left-color: #ef4444;
+}
+
+/* concluída */
+.tarefa.concluida {
+    opacity: 0.6;
+}
+
+.tarefa.concluida .tarefa-texto {
+    text-decoration: line-through;
+}
+
+/* selos */
+.selo {
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    background: #f1f5f9;
+    border-radius: 999px;
+}
+
+.selo.atrasada {
+    color: #dc2626;
+    background: #fee2e2;
+}
+
+/* botões de cada tarefa */
+.btn-editar,
+.btn-excluir {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-editar {
+    color: #3b82f6;
+    border: 1px solid #3b82f6;
+}
+
+.btn-editar:hover {
+    color: #ffffff;
+    background: #3b82f6;
+}
+
+.btn-excluir {
+    color: #dc2626;
+    border: 1px solid #dc2626;
+}
+
+.btn-excluir:hover {
+    color: #ffffff;
+    background: #dc2626;
+}
+
+/* ===== RODAPÉ ===== */
+#contador {
+    margin: 16px 0 0;
+    font-size: 14px;
+    text-align: center;
+    color: #64748b;
+}
