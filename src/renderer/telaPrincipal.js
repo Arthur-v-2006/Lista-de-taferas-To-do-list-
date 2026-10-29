@@ -120,4 +120,32 @@ formTarefa.addEventListener("submit", (e) => {
     tarefaTexto.focus();
 });
 
+listaTarefas.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("btn-excluir")) {
+        return;
+    }
+
+    const li = e.target.closest(".tarefa");
+    const id = Number(li.dataset.id);
+
+    tarefas = tarefas.filter((tarefa) => tarefa.id !== id);
+    salvarTarefas();
+    renderizar();
+});
+
+listaTarefas.addEventListener("change", (e) => {
+    if (e.target.type !== "checkbox") {
+        return;
+    }
+
+    const li = e.target.closest(".tarefa");
+    const id = Number(li.dataset.id);
+
+    const tarefa = tarefas.find((t) => t.id === id);
+    tarefa.concluida = e.target.checked;
+
+    salvarTarefas();
+    renderizar();
+});
+
 renderizar();
