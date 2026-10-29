@@ -98,3 +98,158 @@ a:hover {
     margin: -10px 0 10px;
     min-height: 20px;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: #4896e4;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #1e293b;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background: #b6cbf1;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 28px;
+    color: #3b82f6;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 25px;
+    font-size: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+button {
+    display: block;
+    width: 40%;
+    padding: 12px;
+    margin: 15px auto 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    background: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #2563eb;
+}
+
+p {
+    text-align: center;
+    font-size: 14px;
+    color: #64748b;
+    margin: 20px 0 0;
+}
+
+a {
+    color: #3b82f6;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.oculto {
+    display: none;
+}
+
+.erro {
+    color: #dc2626;
+    font-size: 14px;
+    margin: -10px 0 10px;
+    min-height: 20px;
+}
+
+/* ===== CAMPO DE SENHA COM OLHO ===== */
+.campo-senha {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.campo-senha input {
+    margin-bottom: 0;
+    padding-right: 48px;
+}
+
+.btn-olho {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    margin: 0;
+    padding: 4px;
+    color: #94a3b8;
+    background: transparent;
+    border-radius: 6px;
+    transition: color 0.2s;
+}
+
+.btn-olho:hover {
+    color: #3b82f6;
+    background: transparent;
+}
+
+.btn-olho svg {
+    width: 22px;
+    height: 22px;
+}
+
+.btn-olho .icone-fechado {
+    display: none;
+}
+
+.btn-olho.ativo .icone-aberto {
+    display: none;
+}
+
+.btn-olho.ativo .icone-fechado {
+    display: block;
+}
+
+input::-ms-reveal {
+    display: none;
+}

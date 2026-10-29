@@ -107,3 +107,15 @@ formLogin.addEventListener("submit", (e) => {
 
     window.location.href = "telaPrincipal.html";
 });
+
+document.querySelectorAll(".btn-olho").forEach((botao) => {
+    botao.addEventListener("click", () => {
+        const campo = botao.previousElementSibling;
+        const mostrando = campo.type === "text";
+
+        campo.type = mostrando ? "password" : "text";
+        botao.classList.toggle("ativo", !mostrando);
+        botao.setAttribute("aria-label", mostrando ? "Mostrar senha" : "Ocultar senha");
+        campo.focus();
+    });
+});
