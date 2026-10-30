@@ -28,6 +28,9 @@ const CHAVE_TAREFAS = "tarefas_" + usuario.email;
 let tarefas = JSON.parse(localStorage.getItem(CHAVE_TAREFAS)) || [];
 
 let idEditar = null;
+let filtroAtual = "todas";
+
+const prioridade = { alta: 0, media: 1, baixa: 2 };
 
 function salvarTarefas() {
     localStorage.setItem(CHAVE_TAREFAS, JSON.stringify(tarefas));
@@ -61,7 +64,7 @@ function sairDoModoEditar() {
 function renderizar() {
     listaTarefas.innerHTML = "";
 
-    tarefas.forEach((tarefa) => {
+    filtrarEOrdenar().forEach((tarefa) => {
         const li = document.createElement("li");
         li.classList.add("tarefa", "prioridade-" + tarefa.prioridade);
         if (tarefa.concluida) {
@@ -102,6 +105,19 @@ function renderizar() {
         listaTarefas.appendChild(li);
     });
 }
+
+filtros.forEach((botao) => {
+    botao.addEventListener("click", () => {
+        filtroAtual = botao.dataset.filtro;
+
+        filtros.forEach((b) => b.classList.remove("ativo"));
+        botao.classList.add("ativo");
+
+        renderizar();
+    });
+});
+
+ordenar.addEventListener("change", renderizar);
 
 formTarefa.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -189,5 +205,31 @@ listaTarefas.addEventListener("change", (e) => {
     salvarTarefas();
     renderizar();
 });
+
+function filtrarEOrdenar() {
+    let visiveis = [...tarefas];
+
+    if (filtroAtual === "pendentes") {
+        visiveis = visiveis.filter((t) => !t.concluida);
+    } else if (filtroAtual === "concluidas") {
+        visiveis = visiveis.filter((t) => t.concluida)
+    }
+
+    if (ordenar.value === "recentes") {
+        visiveis.sort((a, b) => b.id - a.id);
+    } else if (ordenar.value === "data") {
+        visiveis.sort((a, b) => {
+            if (!a.data && !b.data) return 0;
+            if (!a.data) return 1;
+            if (!b.data) return -1;
+            return a.data.localeCompare(b.data);
+        })
+    } else if (ordenar.value === "prioridade") {
+        visiveis.sort(
+            (a, b) => prioridade[a.prioridade] - prioridade[b.prioridade]
+        );
+    }
+        return visiveis;
+}
 
 renderizar();
