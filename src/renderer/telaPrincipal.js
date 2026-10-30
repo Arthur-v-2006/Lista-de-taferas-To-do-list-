@@ -22,9 +22,12 @@ const listaTarefas = document.getElementById("lista-tarefas");
 const contador = document.getElementById("contador");
 const ordenar = document.getElementById("ordenar");
 const filtros = document.querySelectorAll(".filtro");
+const btnAdicionar = formTarefa.querySelector(".btn-adicionar");
 
 const CHAVE_TAREFAS = "tarefas_" + usuario.email;
 let tarefas = JSON.parse(localStorage.getItem(CHAVE_TAREFAS)) || [];
+
+let idEditar = null;
 
 function salvarTarefas() {
     localStorage.setItem(CHAVE_TAREFAS, JSON.stringify(tarefas));
@@ -47,6 +50,12 @@ function criarSelo(texto, classeExtra) {
     }
     selo.textContent = texto;
     return selo;
+}
+
+function sairDoModoEditar() {
+    idEditar = null;
+    btnAdicionar.textContent = "Adicionar";
+    formTarefa.reset();
 }
 
 function renderizar() {
@@ -103,16 +112,29 @@ formTarefa.addEventListener("submit", (e) => {
         return;
     }
 
-    const novaTarefa = {
-        id: Date.now(),
-        texto: texto,
-        data: tarefaData.value,
-        prioridade: tarefaPrioridade.value,
-        categoria: tarefaCategoria.value.trim(),
-        concluida: false
-    };
+    if (idEditar !== null) {
+        const tarefa = tarefas.find((t) => t.id === idEditar);
 
-    tarefas.push(novaTarefa);
+        tarefa.texto = texto;
+        tarefa.data = tarefaData.value;
+        tarefa.prioridade = tarefaPrioridade.value;
+        tarefa.categoria = tarefaCategoria.value.trim();
+
+        idEditar = null;
+        btnAdicionar.textContent = "Adicionar";
+    } else {
+        const novaTarefa = {
+            id: Date.now(),
+            texto: texto,
+            data: tarefaData.value,
+            prioridade: tarefaPrioridade.value,
+            categoria: tarefaCategoria.value.trim(),
+            concluida: false
+        };
+
+        tarefas.push(novaTarefa);
+    }
+
     salvarTarefas();
     renderizar();
 
@@ -121,16 +143,36 @@ formTarefa.addEventListener("submit", (e) => {
 });
 
 listaTarefas.addEventListener("click", (e) => {
-    if (!e.target.classList.contains("btn-excluir")) {
+    const li = e.target.closest(".tarefa");
+
+    if (!li) {
         return;
     }
 
-    const li = e.target.closest(".tarefa");
     const id = Number(li.dataset.id);
 
-    tarefas = tarefas.filter((tarefa) => tarefa.id !== id);
-    salvarTarefas();
-    renderizar();
+    if (e.target.classList.contains("btn-excluir")) {
+        if (id === idEditar) {
+            sairDoModoEditar();
+        }
+
+        tarefas = tarefas.filter((tarefa) => tarefa.id !== id);
+        salvarTarefas();
+        renderizar();
+    }
+
+    if (e.target.classList.contains("btn-editar")) {
+        const tarefa = tarefas.find((t) => t.id === id);
+
+        tarefaTexto.value = tarefa.texto;
+        tarefaData.value = tarefa.data;
+        tarefaPrioridade.value = tarefa.prioridade;
+        tarefaCategoria.value = tarefa.categoria;
+
+        idEditar = id;
+        btnAdicionar.textContent = "Salvar";
+        tarefaTexto.focus();
+    }
 });
 
 listaTarefas.addEventListener("change", (e) => {
