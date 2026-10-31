@@ -65,6 +65,7 @@ h1 {
 
 input[type="text"],
 input[type="date"],
+input[type="time"],
 select {
     padding: 10px 12px;
     font-size: 15px;
@@ -78,6 +79,7 @@ select {
 
 input[type="text"]:focus,
 input[type="date"]:focus,
+input[type="time"]:focus,
 select:focus {
     outline: none;
     border-color: #3b82f6;
@@ -89,6 +91,7 @@ select:focus {
 }
 
 #tarefa-data,
+#tarefa-hora,
 #tarefa-prioridade,
 #tarefa-categoria {
     flex: 1 1 140px;

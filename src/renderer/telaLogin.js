@@ -12,7 +12,7 @@ const senhaCadastro = document.getElementById("senha-cadastro");
 const confirmarSenha = document.getElementById("confirmar-senha");
 const erroCadastro = document.getElementById("erro-cadastro");
 
-const TITULO_LOGIN = "Bem-vindo (a)";
+const TITULO_LOGIN = "Acesse sua conta";
 const TITULO_CADASTRO = "Criar conta";
 const CHAVE_USUARIOS = "usuarios";
 
