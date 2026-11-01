@@ -42,9 +42,9 @@ h1 {
     padding: 8px 16px;
     font-size: 14px;
     font-weight: 600;
-    color: #64748b;
+    color: #ff0000;
     background: transparent;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #ff0000;
     border-radius: 8px;
     cursor: pointer;
     transition: color 0.2s, border-color 0.2s;
