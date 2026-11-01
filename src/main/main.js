@@ -9,7 +9,8 @@ function criarJanela() {
         height: 700,
         minWidth: 420,
         minHeight: 500,
-        autoHideMenuBar: true
+        autoHideMenuBar: true,
+        icon: path.join(__dirname, "../assets/icone.png")
     });
 
     janela.loadFile(path.join(__dirname, "../renderer/telaLogin.html"));
