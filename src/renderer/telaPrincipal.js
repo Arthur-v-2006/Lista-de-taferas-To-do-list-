@@ -24,6 +24,8 @@ const ordenar = document.getElementById("ordenar");
 const filtros = document.querySelectorAll(".filtro");
 const btnAdicionar = formTarefa.querySelector(".btn-adicionar");
 const tarefaHora = document.getElementById("tarefa-hora");
+const btnCancelarEdicao = document.getElementById("btn-cancelar-edicao");
+
 
 const CHAVE_TAREFAS = "tarefas_" + usuario.email;
 let tarefas = JSON.parse(localStorage.getItem(CHAVE_TAREFAS)) || [];
@@ -59,8 +61,11 @@ function criarSelo(texto, classeExtra) {
 function sairDoModoEditar() {
     idEditar = null;
     btnAdicionar.textContent = "Adicionar";
+    btnCancelarEdicao.classList.add("oculto");
     formTarefa.reset();
 }
+
+btnCancelarEdicao.addEventListener("click", sairDoModoEditar);
 
 function renderizar() {
     listaTarefas.innerHTML = "";
@@ -208,6 +213,7 @@ listaTarefas.addEventListener("click", (e) => {
 
         idEditar = id;
         btnAdicionar.textContent = "Salvar";
+        btnCancelarEdicao.classList.remove("oculto");
         tarefaTexto.focus();
     }
 });
