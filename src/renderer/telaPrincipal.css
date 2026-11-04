@@ -278,7 +278,7 @@ select:focus {
 
 
 .btn-cancelar:hover {
-    background: #f1f5f9;
+    background: rgb(185, 20, 20);
 }
 
 .oculto {
