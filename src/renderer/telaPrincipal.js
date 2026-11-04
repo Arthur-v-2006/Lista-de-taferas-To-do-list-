@@ -15,6 +15,7 @@ document.querySelector("#logout").addEventListener("click", () => {
 const formTarefa = document.getElementById("form-tarefa");
 const tarefaTexto = document.getElementById("tarefa-texto");
 const tarefaData = document.getElementById("tarefa-data");
+const tarefaHora = document.getElementById("tarefa-hora");
 const tarefaPrioridade = document.getElementById("tarefa-prioridade");
 const tarefaCategoria = document.getElementById("tarefa-categoria");
 const categorias = document.getElementById("categorias");
@@ -23,17 +24,23 @@ const contador = document.getElementById("contador");
 const ordenar = document.getElementById("ordenar");
 const filtros = document.querySelectorAll(".filtro");
 const btnAdicionar = formTarefa.querySelector(".btn-adicionar");
-const tarefaHora = document.getElementById("tarefa-hora");
 const btnCancelarEdicao = document.getElementById("btn-cancelar-edicao");
-
+const modalExclusao = document.getElementById("modal-exclusao");
+const cancelarExclusao = document.getElementById("cancelar-exclusao");
+const confirmarExclusao = document.getElementById("confirmar-exclusao");
 
 const CHAVE_TAREFAS = "tarefas_" + usuario.email;
-let tarefas = JSON.parse(localStorage.getItem(CHAVE_TAREFAS)) || [];
 
+let tarefas = JSON.parse(localStorage.getItem(CHAVE_TAREFAS)) || [];
 let idEditar = null;
+let idTarefaParaExcluir = null;
 let filtroAtual = "todas";
 
-const prioridade = { alta: 0, media: 1, baixa: 2 };
+const ordemPrioridade = {
+    alta: 0,
+    media: 1,
+    baixa: 2
+};
 
 function salvarTarefas() {
     localStorage.setItem(CHAVE_TAREFAS, JSON.stringify(tarefas));
@@ -43,17 +50,24 @@ function formatarData(data) {
     return data.split("-").reverse().join("/");
 }
 
-function nomePrioridade(prioridade) {
-    const nomes = { baixa: "Baixa", media: "Média", alta: "Alta" };
-    return nomes[prioridade];
+function nomePrioridade(valorPrioridade) {
+    const nomes = {
+        baixa: "Baixa",
+        media: "Média",
+        alta: "Alta"
+    };
+
+    return nomes[valorPrioridade];
 }
 
 function criarSelo(texto, classeExtra) {
     const selo = document.createElement("span");
     selo.classList.add("selo");
+
     if (classeExtra) {
         selo.classList.add(classeExtra);
     }
+
     selo.textContent = texto;
     return selo;
 }
@@ -73,9 +87,11 @@ function renderizar() {
     filtrarEOrdenar().forEach((tarefa) => {
         const li = document.createElement("li");
         li.classList.add("tarefa", "prioridade-" + tarefa.prioridade);
+
         if (tarefa.concluida) {
             li.classList.add("concluida");
         }
+
         li.dataset.id = tarefa.id;
 
         const checkbox = document.createElement("input");
@@ -100,28 +116,36 @@ function renderizar() {
         li.append(checkbox, texto);
 
         const atrasada = estaAtrasada(tarefa);
+
         if (tarefa.data) {
-            const seloData = criarSelo(formatarData(tarefa.data), "selo-data");
+            const seloData = criarSelo(
+                formatarData(tarefa.data),
+                "selo-data"
+            );
+
             if (atrasada) {
                 seloData.classList.add("atrasada");
             }
+
             li.appendChild(seloData);
         }
 
         if (tarefa.hora) {
             const seloHora = criarSelo(tarefa.hora);
+
             if (atrasada) {
                 seloHora.classList.add("atrasada");
             }
+
             li.appendChild(seloHora);
         }
 
         if (tarefa.categoria) {
             li.appendChild(criarSelo(tarefa.categoria));
         }
-        li.appendChild(criarSelo(nomePrioridade(tarefa.prioridade)));
 
-                li.append(btnEditar, btnExcluir);
+        li.appendChild(criarSelo(nomePrioridade(tarefa.prioridade)));
+        li.append(btnEditar, btnExcluir);
         listaTarefas.appendChild(li);
     });
 
@@ -133,7 +157,7 @@ filtros.forEach((botao) => {
     botao.addEventListener("click", () => {
         filtroAtual = botao.dataset.filtro;
 
-        filtros.forEach((b) => b.classList.remove("ativo"));
+        filtros.forEach((filtro) => filtro.classList.remove("ativo"));
         botao.classList.add("ativo");
 
         renderizar();
@@ -152,7 +176,12 @@ formTarefa.addEventListener("submit", (e) => {
     }
 
     if (idEditar !== null) {
-        const tarefa = tarefas.find((t) => t.id === idEditar);
+        const tarefa = tarefas.find((item) => item.id === idEditar);
+
+        if (!tarefa) {
+            sairDoModoEditar();
+            return;
+        }
 
         tarefa.texto = texto;
         tarefa.data = tarefaData.value;
@@ -162,6 +191,7 @@ formTarefa.addEventListener("submit", (e) => {
 
         idEditar = null;
         btnAdicionar.textContent = "Adicionar";
+        btnCancelarEdicao.classList.add("oculto");
     } else {
         const novaTarefa = {
             id: Date.now(),
@@ -170,7 +200,7 @@ formTarefa.addEventListener("submit", (e) => {
             hora: tarefaHora.value,
             prioridade: tarefaPrioridade.value,
             categoria: tarefaCategoria.value.trim(),
-            concluida: false,
+            concluida: false
         };
 
         tarefas.push(novaTarefa);
@@ -193,23 +223,22 @@ listaTarefas.addEventListener("click", (e) => {
     const id = Number(li.dataset.id);
 
     if (e.target.classList.contains("btn-excluir")) {
-        if (id === idEditar) {
-            sairDoModoEditar();
-        }
-
-        tarefas = tarefas.filter((tarefa) => tarefa.id !== id);
-        salvarTarefas();
-        renderizar();
+        idTarefaParaExcluir = id;
+        modalExclusao.classList.remove("oculto");
     }
 
     if (e.target.classList.contains("btn-editar")) {
-        const tarefa = tarefas.find((t) => t.id === id);
+        const tarefa = tarefas.find((item) => item.id === id);
+
+        if (!tarefa) {
+            return;
+        }
 
         tarefaTexto.value = tarefa.texto;
-        tarefaData.value = tarefa.data;
+        tarefaData.value = tarefa.data || "";
         tarefaHora.value = tarefa.hora || "";
         tarefaPrioridade.value = tarefa.prioridade;
-        tarefaCategoria.value = tarefa.categoria;
+        tarefaCategoria.value = tarefa.categoria || "";
 
         idEditar = id;
         btnAdicionar.textContent = "Salvar";
@@ -218,15 +247,49 @@ listaTarefas.addEventListener("click", (e) => {
     }
 });
 
+cancelarExclusao.addEventListener("click", () => {
+    idTarefaParaExcluir = null;
+    modalExclusao.classList.add("oculto");
+});
+
+confirmarExclusao.addEventListener("click", () => {
+    if (idTarefaParaExcluir === null) {
+        return;
+    }
+
+    if (idTarefaParaExcluir === idEditar) {
+        sairDoModoEditar();
+    }
+
+    tarefas = tarefas.filter(
+        (tarefa) => tarefa.id !== idTarefaParaExcluir
+    );
+
+    salvarTarefas();
+
+    idTarefaParaExcluir = null;
+    modalExclusao.classList.add("oculto");
+    renderizar();
+});
+
 listaTarefas.addEventListener("change", (e) => {
     if (e.target.type !== "checkbox") {
         return;
     }
 
     const li = e.target.closest(".tarefa");
-    const id = Number(li.dataset.id);
 
-    const tarefa = tarefas.find((t) => t.id === id);
+    if (!li) {
+        return;
+    }
+
+    const id = Number(li.dataset.id);
+    const tarefa = tarefas.find((item) => item.id === id);
+
+    if (!tarefa) {
+        return;
+    }
+
     tarefa.concluida = e.target.checked;
 
     salvarTarefas();
@@ -237,9 +300,9 @@ function filtrarEOrdenar() {
     let visiveis = [...tarefas];
 
     if (filtroAtual === "pendentes") {
-        visiveis = visiveis.filter((t) => !t.concluida);
+        visiveis = visiveis.filter((tarefa) => !tarefa.concluida);
     } else if (filtroAtual === "concluidas") {
-        visiveis = visiveis.filter((t) => t.concluida)
+        visiveis = visiveis.filter((tarefa) => tarefa.concluida);
     }
 
     if (ordenar.value === "recentes") {
@@ -249,14 +312,18 @@ function filtrarEOrdenar() {
             if (!a.data && !b.data) return 0;
             if (!a.data) return 1;
             if (!b.data) return -1;
+
             return a.data.localeCompare(b.data);
-        })
+        });
     } else if (ordenar.value === "prioridade") {
         visiveis.sort(
-            (a, b) => prioridade[a.prioridade] - prioridade[b.prioridade]
+            (a, b) =>
+                ordemPrioridade[a.prioridade] -
+                ordemPrioridade[b.prioridade]
         );
     }
-        return visiveis;
+
+    return visiveis;
 }
 
 function hoje() {
@@ -276,7 +343,7 @@ function estaAtrasada(tarefa) {
 }
 
 function atualizarContador() {
-    const pendentes = tarefas.filter((t) => !t.concluida).length;
+    const pendentes = tarefas.filter((tarefa) => !tarefa.concluida).length;
 
     if (pendentes === 0) {
         contador.textContent = "Nenhuma tarefa pendente";
@@ -288,10 +355,17 @@ function atualizarContador() {
 }
 
 function atualizarCategorias() {
-    const unicas = [...new Set(tarefas.map((t) => t.categoria).filter(Boolean))];
+    const categoriasUnicas = [
+        ...new Set(
+            tarefas
+                .map((tarefa) => tarefa.categoria)
+                .filter(Boolean)
+        )
+    ];
 
     categorias.innerHTML = "";
-    unicas.forEach((nome) => {
+
+    categoriasUnicas.forEach((nome) => {
         const opcao = document.createElement("option");
         opcao.value = nome;
         categorias.appendChild(opcao);

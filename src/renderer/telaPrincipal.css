@@ -284,3 +284,70 @@ select:focus {
 .oculto {
     display: none;
 }
+
+/* ===== MODAL DE EXCLUIR ===== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.45);
+}
+
+.modal-overlay.oculto {
+    display: none;
+}
+
+.modal-confirmacao {
+    width: 100%;
+    max-width: 400px;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+}
+
+.modal-confirmacao h2 {
+    margin: 0 0 8px;
+    color: #1e293b;
+    font-size: 20px;
+}
+
+.modal-confirmacao p {
+    margin: 0 0 22px;
+    color: #64748b;
+}
+
+.modal-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-modal-cancelar,
+.btn-modal-excluir {
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-modal-cancelar {
+    color: #475569;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-modal-excluir {
+    color: #ffffff;
+    background: #dc2626;
+    border: 1px solid #dc2626;
+}
+
+.btn-modal-excluir:hover {
+    background: #b91c1c;
+}

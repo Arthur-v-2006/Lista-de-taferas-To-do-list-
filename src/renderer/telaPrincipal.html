@@ -45,6 +45,20 @@
             </select>
         </div>
 
+        <div id="modal-exclusao" class="modal-overlay oculto">
+            <div class="modal-confirmacao" role="dialog" aria-modal="true" aria-labelledby="titulo-modal">
+                <h2 id="titulo-modal">Excluir tarefa?</h2>
+                <p>Essa ação não pode ser desfeita.</p>
+            
+                <div class="modal-acoes">
+                    <button type="button" id="cancelar-exclusao" class="btn-modal-cancelar">Cancelar</button>
+                    <button type="button" id="confirmar-exclusao" class="btn-modal-excluir">Excluir</button>
+                </div>
+            </div>
+        </div>
+
+
+
         <ul id="lista-tarefas"></ul>
 
         <p id="contador"></p>
