@@ -351,3 +351,12 @@ select:focus {
 .btn-modal-excluir:hover {
     background: #b91c1c;
 }
+
+.mensagem-vazia {
+    padding: 20px;
+    color: #64748b;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+}

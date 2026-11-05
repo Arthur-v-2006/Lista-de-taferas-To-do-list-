@@ -84,7 +84,24 @@ btnCancelarEdicao.addEventListener("click", sairDoModoEditar);
 function renderizar() {
     listaTarefas.innerHTML = "";
 
-    filtrarEOrdenar().forEach((tarefa) => {
+    const tarefasVisiveis = filtrarEOrdenar();
+
+    if (tarefasVisiveis.length === 0) {
+        const mensagem = document.createElement("li");
+        mensagem.classList.add("mensagem-vazia");
+
+        if (filtroAtual === "concluidas") {
+            mensagem.textContent = "Nenhuma tarefa concluída.";
+        } else if (filtroAtual === "pendentes") {
+            mensagem.textContent = "Nenhuma tarefa pendente.";
+        } else {
+            mensagem.textContent = "Ainda não há tarefas. Adicione uma acima.";
+        }
+
+        listaTarefas.appendChild(mensagem);
+    }
+
+    tarefasVisiveis.forEach((tarefa) => {
         const li = document.createElement("li");
         li.classList.add("tarefa", "prioridade-" + tarefa.prioridade);
 
@@ -343,16 +360,29 @@ function estaAtrasada(tarefa) {
 }
 
 function atualizarContador() {
-    const pendentes = tarefas.filter((tarefa) => !tarefa.concluida).length;
+    let quantidade;
+    let texto;
 
-    if (pendentes === 0) {
-        contador.textContent = "Nenhuma tarefa pendente";
-    } else if (pendentes === 1) {
-        contador.textContent = "1 tarefa pendente";
+    if (filtroAtual === "pendentes") {
+        quantidade = tarefas.filter((tarefa) => !tarefa.concluida).length;
+        texto = quantidade === 1
+            ? "1 tarefa pendente"
+            : `${quantidade} tarefas pendentes`;
+    } else if (filtroAtual === "concluidas") {
+        quantidade = tarefas.filter((tarefa) => tarefa.concluida).length;
+        texto = quantidade === 1
+            ? "1 tarefa concluída"
+            : `${quantidade} tarefas concluídas`;
     } else {
-        contador.textContent = pendentes + " tarefas pendentes";
+        quantidade = tarefas.length;
+        texto = quantidade === 1
+            ? "1 tarefa no total"
+            : `${quantidade} tarefas no total`;
     }
+
+    contador.textContent = quantidade > 0 ? texto : "";
 }
+
 
 function atualizarCategorias() {
     const categoriasUnicas = [
