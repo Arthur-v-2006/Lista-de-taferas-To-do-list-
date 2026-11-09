@@ -44,6 +44,10 @@ const ordemPrioridade = {
 
 function salvarTarefas() {
     localStorage.setItem(CHAVE_TAREFAS, JSON.stringify(tarefas));
+
+    if (window.electronAPI) {
+        window.electronAPI.sincronizarLembretes(tarefas);
+    }
 }
 
 function formatarData(data) {
@@ -211,18 +215,17 @@ formTarefa.addEventListener("submit", (e) => {
         btnCancelarEdicao.classList.add("oculto");
     } else {
         const novaTarefa = {
-            id: Date.now(),
-            texto: texto,
-            data: tarefaData.value,
-            hora: tarefaHora.value,
-            prioridade: tarefaPrioridade.value,
-            categoria: tarefaCategoria.value.trim(),
-            concluida: false
-        };
+        id: Date.now(),
+        texto: texto,
+        data: tarefaData.value,
+        hora: tarefaHora.value,
+        prioridade: tarefaPrioridade.value,
+        categoria: tarefaCategoria.value.trim(),
+        concluida: false
+    };
 
-        tarefas.push(novaTarefa);
-    }
-
+    tarefas.push(novaTarefa);
+}
     salvarTarefas();
     renderizar();
 
@@ -400,6 +403,10 @@ function atualizarCategorias() {
         opcao.value = nome;
         categorias.appendChild(opcao);
     });
+}
+
+if (window.electronAPI) {
+    window.electronAPI.sincronizarLembretes(tarefas);
 }
 
 renderizar();
