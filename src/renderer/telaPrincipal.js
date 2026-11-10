@@ -8,6 +8,10 @@ if (!usuario) {
 document.getElementById("nome-usuario").textContent = usuario.nome;
 
 document.querySelector("#logout").addEventListener("click", () => {
+    if (window.electronAPI) {
+        window.electronAPI.sincronizarLembretes([]);
+    }
+
     localStorage.removeItem("usuarioLogado");
     window.location.href = "telaLogin.html";
 });
